@@ -1,0 +1,17 @@
+{
+    "auth_token": "",
+    "models": [
+      {
+        "api_key": "sk-xxx",
+        "base_url": "https://api.openai.com/v1/chat/completions",
+        "model": "gpt-4o"
+      }
+    ],
+    "server": {
+      "model": "release",
+      "port": 2081
+    },
+    "settings":{
+      "timeout":120
+    }
+  }
