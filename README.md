@@ -1,27 +1,34 @@
+English | [中文](./README.zh.md)
+
+___
+
 # AILoad
 
-AILoad 是一个轻量级且高效的工具，通过负载均衡的方式将请求分发到多个 AI 模型接口，从而有效解决单一 AI 模型频率上限问题。目前支持轮询和基于 IP 的负载均衡策略，能够在短时间内确保同一 IP 的请求被分配到同一个 AI 模型，提升一致性和用户体验。
+AILoad is a lightweight and efficient tool that distributes requests to multiple AI model interfaces through load balancing, effectively solving the issue of frequency limits for a single AI model. Currently, it supports round-robin and IP-based load balancing strategies, ensuring that requests from the same IP are allocated to the same AI model within a short time frame, thereby enhancing consistency and user experience.
 
-## 主要功能
+## Main Features
 
-* 负载均衡 ：自动将请求随机分发到多个 AI 模型接口，避免单个模型频率上限，提升整体吞吐量。
-* 统一API入口 ：提供单一入口调用
-* 兼容OpenAI：兼容OpenAI API接口格式
-* 流式返回：支持流式传输
-* IP 亲和性：同一个IP在一定时间内固定分配到一个AI模型，提升连续对话一致性
+* [x] Load Balancing: Automatically distributes requests randomly to multiple AI model interfaces, avoiding single model frequency limits and improving overall throughput.
+* [x] Unified API Entry: Provides a single entry point for invocation.
+* [x] Compatible with OpenAI: Compatible with OpenAI API interface format.
+* [x] Stream Return: Supports stream transmission.
+* [x] IP Affinity: Requests from the same IP are fixedly assigned to one AI model within a certain period, enhancing the consistency of continuous dialogues.
+* [ ] Disable IP affinity via configuration
+* [ ] Specify particular model invocation
+* [ ] Model grouping function
 
 
-## 使用场景
+## Use Cases
 
-目前市面部分厂商提供了免费的AI模型接口，但往往存在频率限制，通过AILoad可以将多个AI接口整合到一起，并通过负载均衡的方式来缓解单一AI模型频率上限的问题。
+Some vendors currently provide free AI model interfaces, but they often come with frequency restrictions. By using AILoad, multiple AI interfaces can be integrated together and the issue of frequency limits for a single AI model can be alleviated through load balancing.
 
-## 部署
+## Deployment
 
-目前仅支持Docker部署，请确保您已经安装Docker环境。
+Currently, only Docker deployment is supported. Please ensure you have installed the Docker environment.
 
-**方式一：Docker Compose安装**
+**Method One: Docker Compose Installation**
 
-`docker-compose.yaml`内容如下：
+The content of `docker-compose.yaml` is as follows:
 
 ```yaml
 version: '3'
@@ -36,9 +43,9 @@ services:
         image: 'helloz/aiload'
 ```
 
-输入命令`docker-compose up -d`运行。
+Run the command `docker-compose up -d`.
 
-**方式二：Docker命令行安装**
+**Method Two: Docker Command Line Installation**
 
 ```bash
 docker run -d \
@@ -49,9 +56,9 @@ docker run -d \
   helloz/aiload
 ```
 
-### 配置文件
+### Configuration File
 
-配置文件位于挂载目录下的`config/config.json`，比如：`/opt/aiload/data/config.json`，默认内容如下：
+The configuration file is located at `config/config.json` under the mounted directory, for example: `/opt/aiload/data/config.json`, with default content as follows:
 
 ```json
 {
@@ -73,15 +80,15 @@ docker run -d \
 }
 ```
 
-* `auth_token`：授权密钥（调用AILoad需要），首次启动会自动设置，您也可以手动修改
-* `models`：模型列表，您可以在这里填写多个模型接口（注意：模型接口需要兼容OpenAI API格式）
-* `settings.timeout`：后端超时时间，默认`120s`，您也可以自行修改
+* `auth_token`: Authorization key (required for calling AILoad), it will be automatically set upon first launch, but you can also modify it manually.
+* `models`: Model list, you can add multiple model interfaces here (Note: The model interface must be compatible with the OpenAI API format).
+* `settings.timeout`: Backend timeout time, default `120s`, which you can also modify yourself.
 
-> 注意：修改配置文件后请先校验json格式是否正确，以免导致程序运行异常。另外每次修改配置后需要重启容器才会生效！
+> Note: After modifying the configuration file, please verify the correctness of the JSON format first to avoid program runtime anomalies. Also, changes to the configuration require a container restart to take effect!
 
-### 使用
+### Usage
 
-AILoad完全兼容OpenAI API格式，您可以像下面这样调用：
+AILoad fully supports the OpenAI API format, and you can call it like this:
 
 ```bash
 curl http://IP:2081/v1/chat/completions \
@@ -102,10 +109,10 @@ curl http://IP:2081/v1/chat/completions \
   }'
 ```
 
-* `sk-xxx`：对应配置文件中的`auth_token`
-* `model`：固定为`auto`
+* `sk-xxx`: Corresponds to the `auth_token` in the configuration file.
+* `model`: Fixed as `auto`.
 
-如果需要流式传输，只需要添加`stream:true`参数即可：
+If you need stream transmission, just add the `stream:true` parameter:
 
 ```json
 {
@@ -124,8 +131,8 @@ curl http://IP:2081/v1/chat/completions \
 }
 ```
 
-> 也支持传递其他参数，比如`top_p/temperature`或其他OpenAI参数格式。
+> Other parameters can also be passed, such as `top_p/temperature` or other OpenAI parameter formats.
 
-## 联系我们
+## Contact Us
 
-如有任何问题或反馈，请通过 GitHub Issues提交。
+For any questions or feedback, please submit them through GitHub Issues.
