@@ -20,7 +20,9 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y upx
 
     - name: 构建Go程序
-      run: go build -o aiload -ldflags -w main.go
+      run: |
+        export CGO_ENABLED=0
+        go build -o aiload -ldflags "-s -w -extldflags '-static'" main.go
 
     - name: 使用UPX压缩可执行文件
       run: upx -9 aiload

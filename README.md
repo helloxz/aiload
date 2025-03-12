@@ -26,7 +26,7 @@ AILoad 是一个轻量级且高效的工具，通过负载均衡的方式将请�
 ```yaml
 version: '3'
 services:
-    wp2ai:
+    aiload:
         container_name: aiload
         volumes:
             - '/opt/aiload/data:/opt/aiload/data'
