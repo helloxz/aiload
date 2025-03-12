@@ -56,6 +56,12 @@ func Auth() gin.HandlerFunc {
 		}
 
 		// 默认阻止
+		// 返回401
+		c.JSON(200, gin.H{
+			"code": 401,
+			"msg":  "Unauthorized",
+			"data": "",
+		})
 		c.Abort()
 	}
 }
