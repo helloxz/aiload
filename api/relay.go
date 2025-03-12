@@ -84,9 +84,9 @@ func Relay(c *gin.Context) {
 	// 随机从 modelList 中选择一个模型
 	randIndex := rand.Intn(len(modelList))
 	// 检查内存中是否存在index
-	index := getModelIndex(c)
+	index, found := getModelIndex(c)
 	// 如果不存在
-	if index == 0 {
+	if !found {
 		// 将选择的模型的 index 存入缓存
 		setModelIndex(c, randIndex)
 	} else {
@@ -122,7 +122,7 @@ func Relay(c *gin.Context) {
 }
 
 // 获取模型的index
-func getModelIndex(c *gin.Context) int {
+func getModelIndex(c *gin.Context) (int, bool) {
 	// 获取用户IP
 	ip := utils.GetClientIP(c)
 	// 生成key
@@ -132,17 +132,17 @@ func getModelIndex(c *gin.Context) int {
 	// 读取缓存
 	value, err := utils.Cache.Get(key)
 	if err != nil {
-		return 0
+		return 0, false
 	}
 	if value == nil {
-		return 0
+		return 0, false
 	}
 	// 转为int
 	index, err := strconv.Atoi(string(value))
 	if err != nil {
-		return 0
+		return 0, false
 	}
-	return index
+	return index, true
 }
 
 // 设置模型的index
