@@ -83,14 +83,18 @@ func Relay(c *gin.Context) {
 
 	// 随机从 modelList 中选择一个模型
 	randIndex := rand.Intn(len(modelList))
-	// 检查内存中是否存在index
-	index, found := getModelIndex(c)
-	// 如果不存在
-	if !found {
-		// 将选择的模型的 index 存入缓存
-		setModelIndex(c, randIndex)
-	} else {
-		randIndex = index
+	// 判断是否开启ip_hash
+	ipHash := viper.GetBool("settings.ip_hash")
+	if ipHash {
+		// 检查内存中是否存在index
+		index, found := getModelIndex(c)
+		// 如果不存在
+		if !found {
+			// 将选择的模型的 index 存入缓存
+			setModelIndex(c, randIndex)
+		} else {
+			randIndex = index
+		}
 	}
 
 	selectedModel := modelList[randIndex]

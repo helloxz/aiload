@@ -12,6 +12,7 @@
       "port": 2081
     },
     "settings":{
-      "timeout":120
+      "timeout":120,
+      "ip_hash":false
     }
 }
